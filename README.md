@@ -10,8 +10,11 @@
                                           
 
 README
-    _AT1 is a quiz application made by Harry Valatos for Preliminary Software Engineering course 2026. 
+    _AT1 is a quiz application made by Harry Valatos for Preliminary Software Engineering course 2026.
+     
     The purpose of this web application is to provide a simple quiz on capital countries.
+
+    This application runs on Python 3.14.2 and Django 6.0.1
 
 CONTACT
     If you have problems, questions, ideas or suggestions, feel free to contact me at harryvalatos@outlook.com
