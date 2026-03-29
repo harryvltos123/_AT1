@@ -1,0 +1,30 @@
+{% extends "quiz/base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Choose a Difficulty</h2>
+    <p>Pick your level and test your knowledge of world capitals!</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="difficulty-grid">
+
+            <button type="submit" name="difficulty" value="normal" class="diff-btn easy">
+                🟢 Normal
+                <span>5 questions · Well-known countries</span>
+            </button>
+
+            <button type="submit" name="difficulty" value="hard" class="diff-btn medium">
+                🟡 Hard
+                <span>6 questions · Trickier capitals</span>
+            </button>
+
+            <button type="submit" name="difficulty" value="difficult" class="diff-btn hard">
+                🔴 Difficult
+                <span>8 questions · Real challenge!</span>
+            </button>
+
+        </div>
+    </form>
+</div>
+{% endblock %}

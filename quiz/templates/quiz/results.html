@@ -1,0 +1,25 @@
+{% extends "quiz/base.html" %}
+
+{% block content %}
+<div class="card results">
+
+    <h2>Quiz Complete! 🎉</h2>
+
+    <div class="score-display">
+        <span class="score-num">{{ score }}</span>
+        <span class="score-sep">/</span>
+        <span class="score-total">{{ total }}</span>
+    </div>
+
+    {% if score == total %}
+        <p class="result-msg perfect">Perfect score! You're a geography genius! 🌟</p>
+    {% elif score >= total|divisibleby:2 %}
+        <p class="result-msg good">Great job! Keep practising!</p>
+    {% else %}
+        <p class="result-msg bad">Keep trying — you'll get there!</p>
+    {% endif %}
+
+    <a href="{% url 'quiz:difficulty' %}" class="btn-submit">🔄 Play Again</a>
+
+</div>
+{% endblock %}

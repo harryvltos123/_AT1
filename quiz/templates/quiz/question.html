@@ -1,0 +1,54 @@
+{% extends "quiz/base.html" %}
+
+{% block content %}
+<div class="card">
+
+    <div class="progress">
+        Question {{ question_num }} of {{ total }}
+        <span class="badge {{ difficulty }}">{{ difficulty|capfirst }}</span>
+    </div>
+
+    <div class="country-visuals">
+        <!-- flags from FlagCDN -->
+        <img
+            src="https://flagcdn.com/w320/{{ flag_code }}.png"
+            alt="Flag of {{ country }}"
+            class="flag"
+        >
+        <!-- silhouette — SVGs stored in static/quiz/silhouettes/<country_code>.svg -->
+        {% load static %}
+        <img
+            src="{% static 'quiz/silhouettes/' %}{{ flag_code }}.svg"
+            alt="Outline of {{ country }}"
+            class="silhouette"
+            onerror="this.style.display='none'"
+        >
+    </div>
+
+    <h2>What is the capital of <strong>{{ country }}</strong>?</h2>
+
+    {% if feedback == "incorrect" %}
+    <p class="feedback incorrect">❌ Not quite — try again!</p>
+    {% endif %}
+
+    {% if hint %}
+    <p class="hint">💡 Hint: {{ hint }}</p>
+    {% endif %}
+
+    <form method="POST" class="answer-form">
+        {% csrf_token %}
+        <input
+            type="text"
+            name="answer"
+            placeholder="Type the capital city..."
+            autocomplete="off"
+            autofocus
+        >
+        <div class="form-actions">
+            <button type="submit" name="action" value="submit" class="btn-submit">✅ Submit</button>
+            <button type="submit" name="action" value="hint" class="btn-hint">💡 Hint</button>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
