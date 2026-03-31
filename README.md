@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ```
+=======
+ ```
+>>>>>>> b5be624 (Version 2)
  ________  _________   _____     
 |\   __  \|\___   ___\/ __  \    
 \ \  \|\  \|___ \  \_|\/_|\  \   
@@ -21,4 +25,8 @@ CONTACT
 
 WEBSITE
     Visit https://se.eforge.online/ for more information on the course.
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> b5be624 (Version 2)
