@@ -235,6 +235,13 @@ main {
 }
 
 /* ── Feedback & hint ── */
+.feedback.correct {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 0.6rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 1.1rem;
+}
 .feedback {
     font-size: 1.1rem;
     margin: 0.8rem 0;
@@ -257,6 +264,26 @@ main {
     padding: 0.6rem 1rem;
     border-radius: 0.75rem;
     border-left: 4px solid #facc15;
+}
+
+.btn-skip { 
+    /* ── made important since it had issues showing on the webpage. a stopgap until i can figure it out ── */
+    padding: 0.8rem 1.6rem !important;
+    border: none !important;
+    border-radius: 1rem !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    font-family: 'Nunito', sans-serif !important;
+    cursor: pointer !important;
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07) !important;
+    transition: transform 0.15s !important;
+}
+
+.btn-skip:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
 }
 
 /* ── Results ── */

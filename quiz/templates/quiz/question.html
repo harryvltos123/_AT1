@@ -9,26 +9,40 @@
     </div>
 
     <div class="country-visuals">
-        <!-- flags from FlagCDN -->
+        {% load static %}
         <img
             src="https://flagcdn.com/w320/{{ flag_code }}.png"
             alt="Flag of {{ country }}"
             class="flag"
         >
-        <!-- silhouette — SVGs stored in static/quiz/silhouettes/<country_code>.svg -->
-        {% load static %}
-        <img
-            src="{% static 'quiz/silhouettes/' %}{{ flag_code }}.svg"
-            alt="Outline of {{ country }}"
-            class="silhouette"
-            onerror="this.style.display='none'"
-        >
+        <div class="silhouette-wrapper">
+            <img
+                src="{% static 'quiz/silhouettes/' %}{{ flag_code }}.svg"
+                alt="Outline of {{ country }}"
+                class="silhouette"
+                onerror="this.style.display='none'"
+            >
+        </div>
     </div>
 
     <h2>What is the capital of <strong>{{ country }}</strong>?</h2>
 
-    {% if feedback == "incorrect" %}
+    <p class="attempts-indicator">
+        {% if attempts_left == 2 %}
+            ❤️❤️ 2 attempts remaining
+        {% elif attempts_left == 1 %}
+            ❤️🖤 1 attempt remaining
+        {% else %}
+            🖤🖤 No attempts remaining
+        {% endif %}
+    </p>
+
+    {% if feedback == "correct" %}
+    <p class="feedback correct">✅ Great work! That's correct!</p>
+    {% elif feedback == "incorrect" %}
     <p class="feedback incorrect">❌ Not quite — try again!</p>
+    {% elif feedback == "out_of_attempts" %}
+    <p class="feedback out-of-attempts">❌ Out of attempts! The capital of {{ country }} is <strong>{{ capital }}</strong>.</p>
     {% endif %}
 
     {% if hint %}
@@ -37,16 +51,26 @@
 
     <form method="POST" class="answer-form">
         {% csrf_token %}
+        {% if feedback != "out_of_attempts" and feedback != "correct" %}
         <input
             type="text"
             name="answer"
             placeholder="Type the capital city..."
             autocomplete="off"
             autofocus
+            {% if feedback == "out_of_attempts" %}disabled{% endif %}
         >
+        {% endif %}
         <div class="form-actions">
-            <button type="submit" name="action" value="submit" class="btn-submit">✅ Submit</button>
-            <button type="submit" name="action" value="hint" class="btn-hint">💡 Hint</button>
+            {% if feedback == "correct" %}
+                <button type="submit" name="action" value="proceed" class="btn-submit">➡️ Proceed</button>
+            {% elif feedback == "out_of_attempts" %}
+                <button type="submit" name="action" value="skip" class="btn-skip">⏭️ Skip</button>
+            {% else %}
+                <button type="submit" name="action" value="submit" class="btn-submit">✅ Submit</button>
+                <button type="submit" name="action" value="hint" class="btn-hint">💡 Hint</button>
+                <button type="submit" name="action" value="skip" class="btn-skip">⏭️ Skip</button>
+            {% endif %}
         </div>
     </form>
 

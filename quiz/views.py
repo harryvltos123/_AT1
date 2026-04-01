@@ -28,7 +28,6 @@ def difficulty(request):
 
 
 def question(request):
-    # show the current question and handle answer submission
     questions = request.session.get("questions")
     current = request.session.get("current", 0)
     total = request.session.get("total", 0)
@@ -39,6 +38,7 @@ def question(request):
     q = questions[current]
     feedback = None
     hint = request.session.pop("hint", None)
+    attempts = request.session.get("attempts", 0)
 
     if request.method == "POST":
         action = request.POST.get("action")
@@ -47,28 +47,50 @@ def question(request):
             request.session["hint"] = q["hint"]
             return redirect("quiz:question")
 
+        if action == "proceed":
+            request.session["current"] += 1
+            request.session["attempts"] = 0
+            request.session.modified = True
+            if request.session["current"] >= total:
+                return redirect("quiz:results")
+            return redirect("quiz:question")
+
+        if action == "skip":
+            request.session["current"] += 1
+            request.session["attempts"] = 0
+            request.session.modified = True
+            if request.session["current"] >= total:
+                return redirect("quiz:results")
+            return redirect("quiz:question")
+
         answer = request.POST.get("answer", "").strip()
         correct = q["capital"]
 
         if answer.lower() == correct.lower():
             request.session["score"] += 1
-            request.session["current"] += 1
+            request.session["attempts"] = 0
             request.session.modified = True
-
-            if request.session["current"] >= total:
-                return redirect("quiz:results")
-            return redirect("quiz:question")
+            feedback = "correct"
         else:
-            feedback = "incorrect"
+            attempts += 1
+            request.session["attempts"] = attempts
+            request.session.modified = True
+            if attempts >= 2:
+                feedback = "out_of_attempts"
+            else:
+                feedback = "incorrect"
 
     return render(request, "quiz/question.html", {
         "country": q["name"],
         "flag_code": q["code"],
+        "capital": q["capital"],
         "question_num": current + 1,
         "total": total,
         "difficulty": request.session.get("difficulty"),
         "feedback": feedback,
         "hint": hint,
+        "attempts": attempts,
+        "attempts_left": max(0, 2 - attempts),
     })
 
 
